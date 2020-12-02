@@ -28,7 +28,6 @@ from the file TotalConsumedCalories.txt"""
 # functional code from the code that is being worked on
 # and to make things easier to read.
 date = datetime.datetime.now()
-
 returning_user = input("If you would like to see your data from previous"
                        " sessions, press 'Y', otherwise press 'enter'.")
 if returning_user == 'Y':
@@ -47,10 +46,17 @@ else:
 name = input("\nHello there! \nWhat's your name?: ")
 
 
-def calculcate_tdee():
+def calculate_tdee():
     # packed the code in a function to separate it from the
     # rest of the code and condense it all.
-    weight = int(input("\nHow much do you weigh in pounds?: "))
+    global daily_calorie_goal
+    while True:
+        try:
+            weight = int(input("\nHow much do you weigh in pounds?: "))
+        except ValueError:
+            print("\nEnter a numerical value.")
+        else:
+            break
     if 77 <= weight <= 143:
         print("\nThere are Capybaras your size!")
     elif weight > 143:
@@ -59,14 +65,20 @@ def calculcate_tdee():
         # the subtraction operator is used to find the
         # difference between a capybaras max weight and
         # the users weight.
-    height = int(input("\nWhat is your height in inches ?: "))
+    while True:
+        try:
+            height = int(input("\nWhat is your height in inches ?: "))
+        except ValueError:
+            print("\nEnter a numerical value.")
+        else:
+            break
     height = (height * .0254)
     # this converts height in inches to meters using the
     # multiplication (arithmetic) operator.
     height = int(height / 0.0254)
     # this converts height in meter back to inches
     # using the division (arithmetic) operator.
-    if height > 55 and height < 3000:  # and boolean operator
+    if 55 < height < 3000:  # and boolean operator
         print(("\nWOW! That's approximately {} inches "
                "longer than a "
                "Capybara!".format(int((height * .0254 - 1.397) // .0254))))
@@ -77,7 +89,13 @@ def calculcate_tdee():
     # This converts weight to kilograms for the equation.
     height *= 2.54  # shortcut (assignment) operator.
     # This converts inches to centimeters for the equation.
-    age = int(input("\nHow old are you?: "))
+    while True:
+        try:
+            age = int(input("\nHow old are you?: "))
+        except ValueError:
+            print("\nEnter a numerical value.")
+        else:
+            break
     # Source for revised Harris-Benedict equation.
     # “Calculating Energy Expenditure.” Nutritional Assessment,
     # Maastricht University Medical Center+, 2020,
@@ -90,17 +108,38 @@ def calculcate_tdee():
     # females using metric units.
     # both equations make use of addition, multiplication
     # and subtraction arithmetic operators.
-    sex = input("\nAre you male or female? "
-                "Type 'M' for male or 'F' for female: ")
+    while True:
+        try:
+            sex = int(input("\nAre you male or female? "
+                            "Type '1' for male or '2' for female: "))
+            while sex < 1 or sex > 2:
+                print("\nEnter the whole number '1' or '2'")
+                sex = int(input("\nAre you male or female? "
+                                "Type '1' for male or '2' for female: "))
+        except ValueError:
+            print("\nEnter a numerical value.")
+        else:
+            break
     # The BMR formula differs depending on
     # whether the user is female or male.
-    if sex == 'M':
+    if sex == '1':
         sex = male_bmr
     else:
         sex = female_bmr
-    activity = int(input("\nFrom 1-5, 1 = not active and 5 = very active, "
-                         "how active are you ?: "))
-    # I still haven't decided what the best delivery for this question is.
+    while True:
+        try:
+            activity = int(input("\nFrom 1-5, 1 = not active and 5 = very "
+                                 "active, "
+                                 "how active are you ?: "))
+            while activity < 1 or activity > 5:
+                print("\nEnter a whole number between 1 and 5")
+                activity = int(input("\nFrom 1-5, 1 = not active and 5 = "
+                                     "very active, "
+                                     "how active are you ?: "))
+        except ValueError:
+            print("\nEnter a whole number between 1 and 5.")
+        else:
+            break
     # The Harris Benedict equation requires an 'activity factor'
     # to determine total daily caloric need. Sourced from
     # “Calculating Energy Expenditure.” Nutritional Assessment,
@@ -119,8 +158,8 @@ def calculcate_tdee():
             activity = 1.9
         else:
             print(activity)
-        print("\nYour total daily caloric need is"
-              , int(sex * activity), "calories.")
+        print("\nYour total daily caloric need is",
+              int(sex * activity), "calories.")
         daily_calorie_goal = int(sex * activity)
         print("\nTime for another fun fact! Female capybaras average",
               (44 % 10), "to", (55 % 10), "pups per litter.")
@@ -164,11 +203,19 @@ def breakfast_data():
     # 'w' ensures that with every iteration of the program, the data inside
     # the files in the CalPybara directory are replaced with new values.
     print("\nThe following reflects what you have eaten for breakfast.")
-    for data in range(1, 100):
+    for info in range(1, 100):
         # Used a for loop set with a range of 1-99 and an if condition
         # to allow the user to enter as many values as they would like.
         # highly unlikely a user would input so many items for one meal
-        cal_val = input("\nEnter caloric value of the food item: ")
+        while True:
+            try:
+                cal_val = int(input("\nEnter caloric value "
+                                    "of the food item: "))
+            except ValueError:
+                print("\nInput a numerical value.")
+            else:
+                break
+        cal_val = str(cal_val)
         calorie_breakfast.write(cal_val)
         calorie_breakfast.write(" ")
         move_on = input("\nType 'Y' to enter more, otherwise press enter.")
@@ -190,11 +237,19 @@ def lunch_data():
     # 'w' ensures that with every iteration of the program, the data inside
     # the files in the CalPybara directory are replaced with new values.
     print("\nThe following reflects what you have eaten for lunch.")
-    for data in range(1, 100):
+    for info in range(1, 100):
         # Used a for loop set with a range of 1-99 and an if condition
         # to allow the user to enter as many values as they would like.
         # highly unlikely a user would input so many items for one meal
-        cal_val = input("\nEnter caloric value of the food item: ")
+        while True:
+            try:
+                cal_val = int(input("\nEnter caloric value of the "
+                                    "food item: "))
+            except ValueError:
+                print("\nInput a numerical value.")
+            else:
+                break
+        cal_val = str(cal_val)
         calorie_lunch.write(cal_val)
         calorie_lunch.write(" ")
         move_on = input("\nType 'Y' to enter more, otherwise press enter.")
@@ -216,11 +271,19 @@ def dinner_data():
     # 'w' ensures that with every iteration of the program, the data inside
     # the files in the CalPybara directory are replaced with new values.
     print("\nThe following reflects what you have eaten for dinner.")
-    for data in range(1, 100):
+    for info in range(1, 100):
         # Used a for loop set with a range of 1-99 and an if condition
         # to allow the user to enter as many values as they would like.
         # highly unlikely a user would input so many items for one meal
-        cal_val = input("\nEnter caloric value of the food item: ")
+        while True:
+            try:
+                cal_val = int(input("\nEnter caloric value "
+                                    "of the food item: "))
+            except ValueError:
+                print("\nInput a numerical value.")
+            else:
+                break
+        cal_val = str(cal_val)
         calorie_dinner.write(cal_val)
         calorie_dinner.write(" ")
         move_on = input("\nType 'Y' to enter more, otherwise press enter.")
@@ -237,6 +300,8 @@ def dinner_data():
 
 
 def breakfast_cals():
+    # declaring the variable within the function to avoid scope warning
+    data = 0
     breakfast_file = open("CalPybara/breakfastInput.txt", "r")
     for data in breakfast_file:
         data = data.rsplit()
@@ -251,6 +316,8 @@ def breakfast_cals():
 
 
 def lunch_cals():
+    # declaring the variable within the function to avoid scope warning
+    data = 0
     lunch_file = open("CalPybara/lunchInput.txt", "r")
     for data in lunch_file:
         data = data.rsplit()
@@ -265,6 +332,8 @@ def lunch_cals():
 
 
 def dinner_cals():
+    data = 0
+    # declaring the variable within the function to avoid scope warning
     dinner_file = open("CalPybara/dinnerInput.txt", "r")
     for data in dinner_file:
         data = data.rsplit()
@@ -284,24 +353,37 @@ tdee_question = input("\nDo you know your daily calorie goal? "
                       "Type 'Y' for yes or 'N' for no: ")
 if tdee_question != "N":  # Does not equal relational operator
     # TDEE = Total Daily Energy Expenditure.
-    daily_calorie_goal = int(input("\nGreat! What is your calorie goal? "))
+    while True:
+        try:
+            daily_calorie_goal = int(input("\nGreat! What is your calorie "
+                                           "goal? "))
+        except ValueError:
+            print("You need to enter a numerical value.")
+        else:
+            break
     while daily_calorie_goal < 500 or daily_calorie_goal > 5000:
-        # 'or' boolean operator
         calorie_check = input("\nAre you sure? That's outside the "
                               "average caloric goal."
                               "Type 'Y' for yes or 'N' for no: ")
         if calorie_check == "Y":
-            break  # breaks from the loop
+            break
         elif calorie_check == "N":
-            daily_calorie_goal = int(input("\nGreat! What is "
-                                           "your calorie goal? "))
+            while True:
+                try:
+                    daily_calorie_goal = int(
+                        input("\nGreat! What is your calorie "
+                              "goal? "))
+                except ValueError:
+                    print("\nYou need to enter a numerical value.")
+                else:
+                    break
     # import math is used to access the sqrt function to take the
     # square root of 7 and then use exponentiation to return it
     # to its original value. int() is used to ensure a float value
     # is not returned.
 else:
     print("\nNo problem! Let's figure that out.")
-    daily_calorie_goal = calculcate_tdee()
+    daily_calorie_goal = calculate_tdee()
     # From here I require specific information to calculate TDEE.
     # It will all be plugged into the revised Harris Benedict Equation.
     # Revised in 1984 by A M Roza and H M Shizgal.
@@ -366,7 +448,7 @@ print("\nThank you for using Calpybara!"
       "\nThe only Capybara Python calorie counter"
       "\nin existence! Your data has been stored.")
 # I am confident that this is true. It has to be.
-quit_program = input("\nType 'Y' to exit program.")
+quit_program = input("\nType 'Enter' to exit program.")
 # I noticed when the program is ran through C:\\WINDOWS\py.exe
 # the program ends abruptly w/o giving the user a chance to read through it.
 # so this was added to fix that.
